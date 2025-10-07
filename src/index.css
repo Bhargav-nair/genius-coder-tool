@@ -137,4 +137,27 @@ All colors MUST be HSL.
   .animate-glow {
     animation: glow-pulse 2s ease-in-out infinite;
   }
+
+  /* Monaco Editor error/warning styles */
+  .error-line {
+    background: rgba(255, 50, 50, 0.15) !important;
+    border-left: 3px solid rgba(255, 50, 50, 0.8) !important;
+  }
+
+  .warning-line {
+    background: rgba(255, 180, 0, 0.15) !important;
+    border-left: 3px solid rgba(255, 180, 0, 0.8) !important;
+  }
+
+  .error-glyph::before {
+    content: "●";
+    color: rgba(255, 50, 50, 1);
+    font-size: 12px;
+  }
+
+  .warning-glyph::before {
+    content: "●";
+    color: rgba(255, 180, 0, 1);
+    font-size: 12px;
+  }
 }

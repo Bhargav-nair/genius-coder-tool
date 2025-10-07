@@ -94,9 +94,9 @@ export const AnalysisPanel = ({ analysis }: AnalysisPanelProps) => {
               <div>
                 <h4 className="text-sm font-semibold text-editor-text mb-3 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-500" />
-                  Suggestions ({analysis.suggestions.length})
+                  Suggestions ({analysis.suggestions.length}) - Press Tab to accept
                 </h4>
-                <div className="space-y-3">
+                <div className="space-y-3 max-h-[250px] overflow-y-auto pr-2">
                   {analysis.suggestions.map((suggestion: any, index: number) => (
                     <motion.div
                       key={index}
@@ -105,7 +105,7 @@ export const AnalysisPanel = ({ analysis }: AnalysisPanelProps) => {
                       transition={{ delay: (analysis.issues?.length || 0) * 0.1 + index * 0.1 }}
                       className="glass-panel rounded-lg p-3"
                     >
-                      <p className="text-sm text-foreground">{suggestion.description || suggestion}</p>
+                      <p className="text-sm text-foreground break-words whitespace-pre-wrap">{suggestion.description || suggestion}</p>
                     </motion.div>
                   ))}
                 </div>

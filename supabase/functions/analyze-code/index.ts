@@ -23,7 +23,7 @@ serve(async (req) => {
   }
 
   try {
-    const { code } = await req.json();
+    const { code, language = 'javascript', requestFix = false } = await req.json();
 
     if (!code || typeof code !== 'string') {
       return new Response(
@@ -32,7 +32,7 @@ serve(async (req) => {
       );
     }
 
-    console.log('Analyzing code with Lexica API...');
+    console.log(`Analyzing ${language} code with Lexica API...`);
 
     // Call Lexica API for code analysis
     const response = await fetch('https://lexica.qewertyy.dev/models', {
@@ -46,10 +46,25 @@ serve(async (req) => {
         messages: [
           {
             role: 'user',
-            content: `You are an advanced Intelligent Code Review Assistant. Analyze the following code and return ONLY a valid JSON object with this exact structure (no markdown, no extra text):
+            content: requestFix 
+              ? `You are an advanced Code Fix Assistant. Fix all issues in the following ${language} code and return ONLY a valid JSON object with this exact structure (no markdown, no extra text):
 
 {
-  "suggestions": ["suggestion 1", "suggestion 2"],
+  "fixedCode": "the complete fixed code here",
+  "changes": ["list of changes made"]
+}
+
+Fix this ${language} code:
+
+\`\`\`${language}
+${code}
+\`\`\`
+
+Return ONLY the JSON object with the fixed code, nothing else.`
+              : `You are an advanced Intelligent Code Review Assistant. Analyze the following ${language} code and return ONLY a valid JSON object with this exact structure (no markdown, no extra text):
+
+{
+  "suggestions": ["specific code suggestion 1", "specific code suggestion 2"],
   "issues": [
     {
       "line": 1,
@@ -61,9 +76,9 @@ serve(async (req) => {
   "explanation": "Educational explanation of the code quality and issues"
 }
 
-Analyze this code:
+Analyze this ${language} code:
 
-\`\`\`
+\`\`\`${language}
 ${code}
 \`\`\`
 
